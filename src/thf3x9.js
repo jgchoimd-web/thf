@@ -83,7 +83,6 @@ export function renderText(canvas, text, font, options = {}) {
   const palette = options.palette ?? font.levels;
   const padding = options.padding ?? 1;
   const lines = String(text).split("\n");
-  const fallback = font.glyphs[font.fallback] || font.glyphs["?"];
   const metrics = measureText(text, font, { advance, lineGap, scale });
   const width = metrics.width + padding * 2 * scale;
   const height = metrics.height + padding * 2 * scale;
@@ -100,7 +99,7 @@ export function renderText(canvas, text, font, options = {}) {
     const cursorY = padding + lineIndex * (font.cellHeight + lineGap);
 
     [...line].forEach((char) => {
-      const glyph = buildGlyphForChar(char, textToParts(char), font) || fallback;
+      const glyph = buildGlyphForChar(char, textToParts(char), font);
       drawGlyph(ctx, glyph, cursorX, cursorY, scale, palette);
       cursorX += advance;
     });
@@ -113,7 +112,7 @@ export function buildGlyphForChar(char, parts = textToParts(char), font = null) 
   }
 
   if (parts.length === 1 && font) {
-    return font.glyphs[parts[0]] || null;
+    return font.glyphs[parts[0]] || unicodeBoxGlyph(char, font);
   }
 
   if (parts.length < 2 || !font) {
@@ -129,6 +128,29 @@ export function buildGlyphForChar(char, parts = textToParts(char), font = null) 
   finals.forEach((final, index) => {
     paintPart(rows, font.glyphs[final], index % 2, 6, 2);
   });
+
+  return rows.map((row) => row.join(""));
+}
+
+export function unicodeBoxGlyph(char, font) {
+  const width = font.cellWidth;
+  const height = font.cellHeight;
+  const rows = blankGlyph(width, height);
+  const codePoint = char.codePointAt(0) ?? 0;
+
+  for (let x = 0; x < width; x += 1) {
+    rows[0][x] = 3;
+    rows[height - 1][x] = 3;
+  }
+
+  for (let y = 1; y < height - 1; y += 1) {
+    rows[y][0] = 3;
+    rows[y][width - 1] = 3;
+  }
+
+  for (let y = 2; y < height - 2; y += 1) {
+    rows[y][1] = ((codePoint >> ((y - 2) * 2)) & 3) || 1;
+  }
 
   return rows.map((row) => row.join(""));
 }
