@@ -24,6 +24,21 @@ const FINALS = [
   "ss", "ng", "j", "ch", "k", "t", "p", "h"
 ];
 
+const compatibilityConsonants = [
+  ["\u3131", "g"], ["\u3132", "gg"], ["\u3133", "gs"], ["\u3134", "n"], ["\u3135", "nj"], ["\u3136", "nh"],
+  ["\u3137", "d"], ["\u3138", "dd"], ["\u3139", "r"], ["\u313a", "rg"], ["\u313b", "rm"], ["\u313c", "rb"],
+  ["\u313d", "rs"], ["\u313e", "rt"], ["\u313f", "rp"], ["\u3140", "rh"], ["\u3141", "m"], ["\u3142", "b"],
+  ["\u3143", "bb"], ["\u3144", "bs"], ["\u3145", "s"], ["\u3146", "ss"], ["\u3147", "ng"], ["\u3148", "j"],
+  ["\u3149", "jj"], ["\u314a", "ch"], ["\u314b", "k"], ["\u314c", "t"], ["\u314d", "p"], ["\u314e", "h"]
+];
+
+const compatibilityVowels = [
+  ["\u314f", "a"], ["\u3150", "ae"], ["\u3151", "ya"], ["\u3152", "yae"], ["\u3153", "eo"], ["\u3154", "e"],
+  ["\u3155", "yeo"], ["\u3156", "ye"], ["\u3157", "o"], ["\u3158", "wa"], ["\u3159", "wae"], ["\u315a", "oe"],
+  ["\u315b", "yo"], ["\u315c", "u"], ["\u315d", "wo"], ["\u315e", "we"], ["\u315f", "wi"], ["\u3160", "yu"],
+  ["\u3161", "eu"], ["\u3162", "ui"], ["\u3163", "i"]
+];
+
 const initialPatterns = {
   g: ["3330", "0030", "0020"],
   gg: ["3333", "3030", "3030"],
@@ -245,6 +260,14 @@ function makeBaseGlyphs() {
     result[String.fromCodePoint(codePoint)] = placeFiveHigh(rows);
   }
 
+  for (const [char, key] of compatibilityConsonants) {
+    result[char] = makeStandaloneConsonantGlyph(key);
+  }
+
+  for (const [char, key] of compatibilityVowels) {
+    result[char] = makeStandaloneVowelGlyph(key);
+  }
+
   return result;
 }
 
@@ -357,6 +380,29 @@ function paintCompoundVowel(rows, medial, hasFinal) {
 
 function placeFiveHigh(rows) {
   return ["0000", ...rows, "0000", "0000", "0000"];
+}
+
+function makeStandaloneConsonantGlyph(key) {
+  const rows = blank();
+  const pattern = initialPatterns[key] || finalPatterns[key];
+  const source = pattern.length === 2 ? [...pattern, "0000"] : pattern;
+
+  paint(rows, source, 0, 2, 3);
+  return serialize(rows);
+}
+
+function makeStandaloneVowelGlyph(key) {
+  const rows = blank();
+
+  if (verticalMedials.has(key)) {
+    paintVerticalVowel(rows, key, false);
+  } else if (horizontalMedials.has(key)) {
+    paintHorizontalVowel(rows, key, false);
+  } else {
+    paintCompoundVowel(rows, key, false);
+  }
+
+  return serialize(rows);
 }
 
 function paint(target, pattern, xOffset, yOffset, strength = 3) {

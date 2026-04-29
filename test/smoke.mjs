@@ -54,6 +54,11 @@ for (const char of ["\u2665", "\u263a", "\ud83d\ude00", "\ud83d\udc4d"]) {
   assert(font.glyphs[char], `${char} must have a dedicated symbol or emoji glyph`);
 }
 
+for (const char of ["\u3131", "\u3132", "\u3133", "\u3134", "\u3139", "\u314e", "\u314f", "\u3150", "\u3158", "\u3161", "\u3163"]) {
+  assert(font.glyphs[char], `${char} must have a dedicated standalone jamo glyph`);
+  assert.notDeepEqual(buildGlyphForChar(char, undefined, font), unicodeBoxGlyph(char, font));
+}
+
 const boxGlyph = buildGlyphForChar("\u25ca", undefined, font);
 assert.deepEqual(boxGlyph, unicodeBoxGlyph("\u25ca", font));
 assert.equal(boxGlyph[0], "3333");
