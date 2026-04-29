@@ -239,7 +239,7 @@ const font = {
   cellWidth: WIDTH,
   cellHeight: HEIGHT,
   advance: 5,
-  levels: ["transparent", "#c8c8c8", "#7f7f7f", "#111111"],
+  levels: ["transparent", "#4f4f4f", "#9a9a9a", "#f1f1f1"],
   fallback: "?",
   generatedHangulSyllables: HANGUL_COUNT,
   supportedAsciiRange: "U+0020-U+007E",
@@ -253,11 +253,11 @@ function makeBaseGlyphs() {
   const result = {};
 
   for (const [char, rows] of Object.entries(asciiPatterns)) {
-    result[char] = placeFiveHigh(rows);
+    result[char] = stylizeGlyph(placeFiveHigh(rows));
   }
 
   for (const [codePoint, rows] of extraSymbols) {
-    result[String.fromCodePoint(codePoint)] = placeFiveHigh(rows);
+    result[String.fromCodePoint(codePoint)] = stylizeGlyph(placeFiveHigh(rows));
   }
 
   for (const [char, key] of compatibilityConsonants) {
@@ -291,7 +291,7 @@ function makeSyllableGlyph(initial, medial, final) {
     paint(rows, finalPatterns[final], 0, 7, 3);
   }
 
-  return serialize(rows);
+  return stylizeGlyph(serialize(rows));
 }
 
 function paintVerticalVowel(rows, medial, hasFinal) {
@@ -388,7 +388,7 @@ function makeStandaloneConsonantGlyph(key) {
   const source = pattern.length === 2 ? [...pattern, "0000"] : pattern;
 
   paint(rows, source, 0, 2, 3);
-  return serialize(rows);
+  return stylizeGlyph(serialize(rows));
 }
 
 function makeStandaloneVowelGlyph(key) {
@@ -402,7 +402,44 @@ function makeStandaloneVowelGlyph(key) {
     paintCompoundVowel(rows, key, false);
   }
 
-  return serialize(rows);
+  return stylizeGlyph(serialize(rows));
+}
+
+function stylizeGlyph(glyph) {
+  const source = glyph.map((row) => [...row].map(Number));
+  const result = source.map((row) => [...row]);
+
+  for (let y = 0; y < HEIGHT; y += 1) {
+    for (let x = 0; x < WIDTH; x += 1) {
+      const value = source[y][x];
+
+      if (value === 0) {
+        continue;
+      }
+
+      spread(result, x + 1, y, Math.max(1, value - 1));
+      spread(result, x, y + 1, Math.max(1, value - 1));
+      spread(result, x - 1, y, value >= 3 ? 1 : 0);
+    }
+  }
+
+  for (let y = 0; y < HEIGHT; y += 1) {
+    for (let x = 0; x < WIDTH; x += 1) {
+      if (source[y][x] >= 3) {
+        result[y][x] = 3;
+      }
+    }
+  }
+
+  return serialize(result);
+}
+
+function spread(rows, x, y, value) {
+  if (value <= 0 || x < 0 || y < 0 || y >= HEIGHT || x >= WIDTH) {
+    return;
+  }
+
+  rows[y][x] = Math.max(rows[y][x], value);
 }
 
 function paint(target, pattern, xOffset, yOffset, strength = 3) {
