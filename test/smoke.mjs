@@ -16,8 +16,8 @@ assert.deepEqual(decomposeChar("\ud55c"), ["\u314e", "\u314f", "\u3134"]);
 assert.deepEqual(decomposeChar("\uae00"), ["\u3131", "\u3161", "\u3139"]);
 assert.equal(textToGlyphs("\ud55c\uae00", font).length, 2);
 assert.equal(font.generatedHangulSyllables, 11172);
-assert.equal(font.cellWidth, 6);
-assert.equal(font.cellHeight, 7);
+assert.equal(font.cellWidth, 8);
+assert.equal(font.cellHeight, 9);
 
 for (const [name, rows] of Object.entries(font.glyphs)) {
   assert.equal(rows.length, font.cellHeight, `${name} must be ${font.cellHeight} rows`);
@@ -65,7 +65,7 @@ assert.equal(boxGlyph[0], "1".repeat(font.cellWidth));
 assert.equal(boxGlyph.at(-1), "1".repeat(font.cellWidth));
 
 const size = measureText("\ud55c\uae00", font, { scale: 8 });
-assert.equal(size.width, 104);
-assert.equal(size.height, 56);
+assert.equal(size.width, 136);
+assert.equal(size.height, 72);
 
 console.log("smoke ok");

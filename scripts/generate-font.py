@@ -6,8 +6,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
 FONT_PATH = ROOT / "font" / "thf-original.json"
-WIDTH = 6
-HEIGHT = 7
+WIDTH = 8
+HEIGHT = 9
 HANGUL_START = 0xAC00
 HANGUL_END = 0xD7A3
 ASCII_START = 0x20
@@ -16,8 +16,8 @@ JAMO_START = 0x3131
 JAMO_END = 0x3163
 LEVELS = ["transparent", "#eeeeee"]
 
-TEXT_FONT = ImageFont.truetype(r"C:\Windows\Fonts\malgunbd.ttf", 10)
-EMOJI_FONT = ImageFont.truetype(r"C:\Windows\Fonts\seguiemj.ttf", 9)
+TEXT_FONT = ImageFont.truetype(r"C:\Windows\Fonts\malgunbd.ttf", 12)
+EMOJI_FONT = ImageFont.truetype(r"C:\Windows\Fonts\seguiemj.ttf", 11)
 
 EXTRA_CODEPOINTS = [
     0x00A9, 0x00AE, 0x2600, 0x2601, 0x2602, 0x2603, 0x2605, 0x2606,
@@ -106,7 +106,7 @@ def rasterize(char, font):
 
 
 def quantize(value):
-    return 1 if value >= 72 else 0
+    return 1 if value >= 96 else 0
 
 
 if __name__ == "__main__":
