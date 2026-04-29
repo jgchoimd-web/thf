@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>THF 3x9 Gray</title>
+    <title>THF 4x9 Gray</title>
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
@@ -11,8 +11,8 @@
       <section class="toolbar" aria-label="Font controls">
         <label>
           <span>Text</span>
-          <textarea id="text" rows="2">한글 픽셀폰트 3x9
-THF GRAY 2026 ☃</textarea>
+          <textarea id="text" rows="2">한글 Pixel Font 4x9
+THF gray Aa!? ♥ ☺ 😀</textarea>
         </label>
         <label>
           <span>Scale</span>
@@ -22,9 +22,9 @@ THF GRAY 2026 ☃</textarea>
       <canvas id="preview" aria-label="3x8 grayscale Korean pixel font preview"></canvas>
     </main>
     <script type="module">
-      import { renderText } from "../src/thf3x9.js";
+      import { renderText } from "../src/thf4x9.js";
 
-      const font = await fetch("../font/thf-3x9-gray.json").then((response) => response.json());
+      const font = await fetch("../font/thf-4x9-gray.json").then((response) => response.json());
       const canvas = document.querySelector("#preview");
       const textInput = document.querySelector("#text");
       const scaleInput = document.querySelector("#scale");
