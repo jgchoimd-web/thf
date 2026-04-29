@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "build:font": "node scripts/generate-hangul.mjs",
     "check": "node test/smoke.mjs",
     "test": "node test/smoke.mjs"
   }
