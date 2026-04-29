@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>THF 3x8 Gray</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <main>
+      <section class="toolbar" aria-label="Font controls">
+        <label>
+          <span>Text</span>
+          <textarea id="text" rows="2">한글 픽셀폰트 3x8
+THF GRAY 2026</textarea>
+        </label>
+        <label>
+          <span>Scale</span>
+          <input id="scale" type="range" min="4" max="18" value="10">
+        </label>
+      </section>
+      <canvas id="preview" aria-label="3x8 grayscale Korean pixel font preview"></canvas>
+    </main>
+    <script type="module">
+      import { renderText } from "../src/thf3x8.js";
+
+      const font = await fetch("../font/thf-3x8-gray.json").then((response) => response.json());
+      const canvas = document.querySelector("#preview");
+      const textInput = document.querySelector("#text");
+      const scaleInput = document.querySelector("#scale");
+
+      function draw() {
+        renderText(canvas, textInput.value, font, {
+          scale: Number(scaleInput.value),
+          background: "#eeeeee",
+          padding: 2
+        });
+      }
+
+      textInput.addEventListener("input", draw);
+      scaleInput.addEventListener("input", draw);
+      draw();
+    </script>
+  </body>
+</html>

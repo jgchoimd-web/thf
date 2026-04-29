@@ -1,0 +1,10 @@
+{
+  "name": "thf-3x8-gray",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "check": "node test/smoke.mjs",
+    "test": "node test/smoke.mjs"
+  }
+}
