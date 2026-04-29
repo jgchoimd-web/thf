@@ -4,12 +4,25 @@
 
 ## 구성
 
-- `font/thf-original-gray.json`: 원본 스타일 한글/ASCII/심볼/간단한 이모티콘 글리프 데이터
+- `dist/THFOriginalGray.ttf`: 설치하거나 `@font-face`로 사용할 수 있는 TrueType 폰트 파일
+- `font/thf-original-gray.json`: Canvas 렌더러용 원본 스타일 픽셀 글리프 데이터
 - `scripts/generate-font.py`: 완성형 한글과 기본 문자 전체 글리프 생성기
+- `scripts/generate-ttf.py`: JSON 픽셀 글리프를 TrueType 윤곽선 글리프로 변환하는 생성기
 - `src/thf-original.js`: Canvas 렌더러
 - `demo/index.html`: 브라우저 데모
 
 ## 사용법
+
+웹 폰트로 사용할 때:
+
+```css
+@font-face {
+  font-family: "THF Original Gray";
+  src: url("./dist/THFOriginalGray.ttf") format("truetype");
+}
+```
+
+Canvas 렌더러로 사용할 때:
 
 ```html
 <canvas id="screen"></canvas>
@@ -31,10 +44,10 @@ python -m http.server 8080
 폰트 데이터를 다시 만들려면 아래 명령을 실행합니다.
 
 ```powershell
-npm run build:font
+npm run build
 ```
 
-생성기는 Python과 Pillow를 사용합니다.
+생성기는 Python, Pillow, fontTools를 사용합니다.
 
 ## 디자인 노트
 

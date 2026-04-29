@@ -4,8 +4,10 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "build": "npm run build:font && npm run build:ttf",
     "build:font": "python scripts/generate-font.py",
-    "check": "node test/smoke.mjs",
-    "test": "node test/smoke.mjs"
+    "build:ttf": "python scripts/generate-ttf.py",
+    "check": "npm test",
+    "test": "node test/smoke.mjs && python test/smoke_ttf.py"
   }
 }

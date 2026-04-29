@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "THF Original Gray";
+  src: url("../dist/THFOriginalGray.ttf") format("truetype");
+  font-display: block;
+}
+
 :root {
   color-scheme: light;
   font-family: Arial, "Malgun Gothic", sans-serif;
@@ -49,6 +55,8 @@ textarea {
 }
 
 textarea {
+  font-family: "THF Original Gray", Arial, "Malgun Gothic", sans-serif;
+  font-size: 18px;
   resize: vertical;
 }
 
