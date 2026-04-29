@@ -1,0 +1,13 @@
+{
+  "name": "thf-original",
+  "version": "0.4.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:font && npm run build:ttf",
+    "build:font": "python scripts/generate-font.py",
+    "build:ttf": "python scripts/generate-ttf.py",
+    "check": "npm test",
+    "test": "node test/smoke.mjs && python test/smoke_ttf.py"
+  }
+}
