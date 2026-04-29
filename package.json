@@ -1,10 +1,10 @@
 {
-  "name": "thf-4x9-gray",
-  "version": "0.2.0",
+  "name": "thf-original-gray",
+  "version": "0.3.0",
   "type": "module",
   "private": true,
   "scripts": {
-    "build:font": "node scripts/generate-font.mjs",
+    "build:font": "python scripts/generate-font.py",
     "check": "node test/smoke.mjs",
     "test": "node test/smoke.mjs"
   }

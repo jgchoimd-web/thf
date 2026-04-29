@@ -6,9 +6,9 @@ import {
   measureText,
   textToGlyphs,
   unicodeBoxGlyph
-} from "../src/thf4x9.js";
+} from "../src/thf-original.js";
 
-const font = JSON.parse(await readFile(new URL("../font/thf-4x9-gray.json", import.meta.url), "utf8"));
+const font = JSON.parse(await readFile(new URL("../font/thf-original-gray.json", import.meta.url), "utf8"));
 const hangulStart = 0xac00;
 const hangulEnd = 0xd7a3;
 
@@ -16,8 +16,8 @@ assert.deepEqual(decomposeChar("\ud55c"), ["\u314e", "\u314f", "\u3134"]);
 assert.deepEqual(decomposeChar("\uae00"), ["\u3131", "\u3161", "\u3139"]);
 assert.equal(textToGlyphs("\ud55c\uae00", font).length, 2);
 assert.equal(font.generatedHangulSyllables, 11172);
-assert.equal(font.cellWidth, 4);
-assert.equal(font.cellHeight, 9);
+assert.equal(font.cellWidth, 6);
+assert.equal(font.cellHeight, 7);
 
 for (const [name, rows] of Object.entries(font.glyphs)) {
   assert.equal(rows.length, font.cellHeight, `${name} must be ${font.cellHeight} rows`);
@@ -40,7 +40,7 @@ assert.equal(hangulCount, 11172);
 
 const glyph = buildGlyphForChar("\ud55c", undefined, font);
 assert.deepEqual(glyph, font.glyphs["\ud55c"]);
-assert.equal(glyph.length, 9);
+assert.equal(glyph.length, font.cellHeight);
 assert(glyph.some((row) => row !== "000"));
 
 const unknownGlyph = buildGlyphForChar("\u2603", undefined, font);
@@ -61,11 +61,11 @@ for (const char of ["\u3131", "\u3132", "\u3133", "\u3134", "\u3139", "\u314e", 
 
 const boxGlyph = buildGlyphForChar("\u25ca", undefined, font);
 assert.deepEqual(boxGlyph, unicodeBoxGlyph("\u25ca", font));
-assert.equal(boxGlyph[0], "3333");
-assert.equal(boxGlyph.at(-1), "3333");
+assert.equal(boxGlyph[0], "3".repeat(font.cellWidth));
+assert.equal(boxGlyph.at(-1), "3".repeat(font.cellWidth));
 
 const size = measureText("\ud55c\uae00", font, { scale: 8 });
-assert.equal(size.width, 72);
-assert.equal(size.height, 72);
+assert.equal(size.width, 104);
+assert.equal(size.height, 56);
 
 console.log("smoke ok");

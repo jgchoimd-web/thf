@@ -1,12 +1,12 @@
-# THF 4x9 Gray
+# THF Original Gray
 
-픽셀화된 4x9 그레이스케일 한국어 비트맵 폰트입니다. `가`부터 `힣`까지 완성형 한글 11,172자를 모두 4x9 픽셀 셀 하나씩 따로 저장합니다.
+원본 스크린샷처럼 낮은 해상도로 뭉개진 한국어 그레이스케일 비트맵 폰트입니다. `가`부터 `힣`까지 완성형 한글 11,172자를 실제 한국어 폰트에서 작게 래스터라이즈해 각각 저장합니다.
 
 ## 구성
 
-- `font/thf-4x9-gray.json`: 4x9 픽셀 한글/ASCII/심볼/간단한 이모티콘 글리프 데이터
-- `scripts/generate-font.mjs`: 완성형 한글과 기본 문자 전체 글리프 생성기
-- `src/thf4x9.js`: Canvas 렌더러
+- `font/thf-original-gray.json`: 원본 스타일 한글/ASCII/심볼/간단한 이모티콘 글리프 데이터
+- `scripts/generate-font.py`: 완성형 한글과 기본 문자 전체 글리프 생성기
+- `src/thf-original.js`: Canvas 렌더러
 - `demo/index.html`: 브라우저 데모
 
 ## 사용법
@@ -14,11 +14,11 @@
 ```html
 <canvas id="screen"></canvas>
 <script type="module">
-  import { renderText } from "./src/thf4x9.js";
+  import { renderText } from "./src/thf-original.js";
 
-  const font = await fetch("./font/thf-4x9-gray.json").then((res) => res.json());
+  const font = await fetch("./font/thf-original-gray.json").then((res) => res.json());
   const canvas = document.querySelector("#screen");
-  renderText(canvas, "한글 4x9 Aa!? ♥", font, { scale: 8 });
+  renderText(canvas, "한글 Aa!? ♥", font, { scale: 8 });
 </script>
 ```
 
@@ -34,8 +34,10 @@ python -m http.server 8080
 npm run build:font
 ```
 
+생성기는 Python과 Pillow를 사용합니다.
+
 ## 디자인 노트
 
-4x9 셀은 한글을 표현하기에 여전히 작기 때문에, 이 폰트는 인쇄용 폰트보다 레트로 UI, 게임 HUD, 저해상도 디스플레이, 글리치 그래픽에 어울립니다. 각 픽셀은 `0`부터 `3`까지 네 단계로 저장되며, 검은 배경 위에서 밝은 흰색 중심획과 회색 보조 픽셀이 뭉쳐 보이도록 생성됩니다.
+이 폰트는 인쇄용 폰트보다 레트로 UI, 게임 HUD, 저해상도 디스플레이, 글리치 그래픽에 어울립니다. 각 글리프는 Windows의 Malgun Gothic Bold를 아주 작게 래스터라이즈한 뒤 4단계 회색 픽셀로 양자화해 생성합니다.
 
-한글 완성형 글자는 모두 개별 글리프로 저장되어 렌더링됩니다. `ㄱ`, `ㄲ`, `ㄳ`, `ㅏ`, `ㅐ`, `ㅘ`, `ㅡ`, `ㅣ` 같은 호환 자모 단독 글자도 지원합니다. 영어 대문자/소문자, 숫자, ASCII 특수기호, `♥`, `★`, `♪`, `☺`, `☹`, `☀`, `☁`, `☂`, `☃`, `😀`, `😂`, `😉`, `😍`, `😎`, `😢`, `😡`, `👍`, `👎` 같은 간단한 이모티콘도 포함합니다. 폰트 데이터에 없는 문자는 `?`로 대체하지 않고, 해당 코드포인트에서 파생된 4x9 유니코드 박스 글리프로 표시합니다.
+한글 완성형 글자는 모두 개별 글리프로 저장되어 렌더링됩니다. `ㄱ`, `ㄲ`, `ㄳ`, `ㅏ`, `ㅐ`, `ㅘ`, `ㅡ`, `ㅣ` 같은 호환 자모 단독 글자도 지원합니다. 영어 대문자/소문자, 숫자, ASCII 특수기호, `♥`, `★`, `♪`, `☺`, `☹`, `☀`, `☁`, `☂`, `☃`, `😀`, `😂`, `😉`, `😍`, `😎`, `😢`, `😡`, `👍`, `👎` 같은 간단한 이모티콘도 포함합니다. 폰트 데이터에 없는 문자는 `?`로 대체하지 않고, 해당 코드포인트에서 파생된 유니코드 박스 글리프로 표시합니다.
