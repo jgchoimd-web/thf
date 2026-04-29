@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>THF Original Gray</title>
+    <title>THF Original</title>
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
@@ -19,12 +19,12 @@ THF gray Aa!? &#9829; &#9786; &#128512;</textarea>
           <input id="scale" type="range" min="4" max="18" value="10">
         </label>
       </section>
-      <canvas id="preview" aria-label="THF Original Gray preview"></canvas>
+      <canvas id="preview" aria-label="THF Original preview"></canvas>
     </main>
     <script type="module">
       import { renderText } from "../src/thf-original.js";
 
-      const font = await fetch("../font/thf-original-gray.json").then((response) => response.json());
+      const font = await fetch("../font/thf-original.json").then((response) => response.json());
       const canvas = document.querySelector("#preview");
       const textInput = document.querySelector("#text");
       const scaleInput = document.querySelector("#scale");

@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 ROOT = Path(__file__).resolve().parents[1]
-FONT_PATH = ROOT / "font" / "thf-original-gray.json"
+FONT_PATH = ROOT / "font" / "thf-original.json"
 WIDTH = 6
 HEIGHT = 7
 HANGUL_START = 0xAC00
@@ -14,7 +14,7 @@ ASCII_START = 0x20
 ASCII_END = 0x7E
 JAMO_START = 0x3131
 JAMO_END = 0x3163
-LEVELS = ["transparent", "#4a4a4a", "#9a9a9a", "#eeeeee"]
+LEVELS = ["transparent", "#eeeeee"]
 
 TEXT_FONT = ImageFont.truetype(r"C:\Windows\Fonts\malgunbd.ttf", 10)
 EMOJI_FONT = ImageFont.truetype(r"C:\Windows\Fonts\seguiemj.ttf", 9)
@@ -48,8 +48,8 @@ def main():
         glyphs[char] = rasterize(char, font)
 
     font = {
-        "name": "THF Original Gray",
-        "version": "0.3.0",
+        "name": "THF Original",
+        "version": "0.4.0",
         "cellWidth": WIDTH,
         "cellHeight": HEIGHT,
         "advance": WIDTH + 1,
@@ -60,7 +60,7 @@ def main():
         "supportedJamoRange": "U+3131-U+3163",
         "supportedEmojiCodepoints": [f"U+{codepoint:X}" for codepoint in EXTRA_CODEPOINTS],
         "sourceFont": "Malgun Gothic Bold",
-        "rendering": "rasterized, downsampled, and quantized to four grayscale levels",
+        "rendering": "rasterized, downsampled, and thresholded to monochrome pixels",
         "glyphs": glyphs,
     }
 
@@ -106,13 +106,7 @@ def rasterize(char, font):
 
 
 def quantize(value):
-    if value < 28:
-        return 0
-    if value < 92:
-        return 1
-    if value < 172:
-        return 2
-    return 3
+    return 1 if value >= 72 else 0
 
 
 if __name__ == "__main__":

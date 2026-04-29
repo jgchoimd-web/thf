@@ -7,9 +7,9 @@ from fontTools.pens.ttGlyphPen import TTGlyphPen
 
 
 ROOT = Path(__file__).resolve().parents[1]
-JSON_PATH = ROOT / "font" / "thf-original-gray.json"
-TTF_PATH = ROOT / "dist" / "THFOriginalGray.ttf"
-FAMILY_NAME = "THF Original Gray"
+JSON_PATH = ROOT / "font" / "thf-original.json"
+TTF_PATH = ROOT / "dist" / "THFOriginal.ttf"
+FAMILY_NAME = "THF Original"
 STYLE_NAME = "Regular"
 UNITS_PER_EM = 1000
 PIXEL_SIZE = 100
@@ -72,7 +72,7 @@ def glyph_name_for(codepoint):
 
 
 def missing_glyph(width, height):
-    rows = ["3" * width, *["3" + "0" * (width - 2) + "3" for _ in range(height - 2)], "3" * width]
+    rows = ["1" * width, *["1" + "0" * (width - 2) + "1" for _ in range(height - 2)], "1" * width]
     return draw_pixel_glyph(rows, width, height)
 
 
@@ -86,11 +86,10 @@ def draw_pixel_glyph(rows, width, height):
             if level <= 0:
                 continue
 
-            inset = {1: 30, 2: 15, 3: 0}[level]
-            left = x * PIXEL_SIZE + inset
-            right = (x + 1) * PIXEL_SIZE - inset
-            top = (height - y) * PIXEL_SIZE - inset
-            bottom = (height - y - 1) * PIXEL_SIZE + inset
+            left = x * PIXEL_SIZE
+            right = (x + 1) * PIXEL_SIZE
+            top = (height - y) * PIXEL_SIZE
+            bottom = (height - y - 1) * PIXEL_SIZE
             draw_box(pen, left, bottom, right, top)
 
     return pen.glyph()

@@ -8,7 +8,7 @@ import {
   unicodeBoxGlyph
 } from "../src/thf-original.js";
 
-const font = JSON.parse(await readFile(new URL("../font/thf-original-gray.json", import.meta.url), "utf8"));
+const font = JSON.parse(await readFile(new URL("../font/thf-original.json", import.meta.url), "utf8"));
 const hangulStart = 0xac00;
 const hangulEnd = 0xd7a3;
 
@@ -24,7 +24,7 @@ for (const [name, rows] of Object.entries(font.glyphs)) {
 
   for (const row of rows) {
     assert.equal(row.length, font.cellWidth, `${name} row must be ${font.cellWidth} pixels wide`);
-    assert.match(row, /^[0-3]+$/, `${name} row uses only 0-3 grayscale levels`);
+    assert.match(row, /^[01]+$/, `${name} row uses only monochrome levels`);
   }
 }
 
@@ -61,8 +61,8 @@ for (const char of ["\u3131", "\u3132", "\u3133", "\u3134", "\u3139", "\u314e", 
 
 const boxGlyph = buildGlyphForChar("\u25ca", undefined, font);
 assert.deepEqual(boxGlyph, unicodeBoxGlyph("\u25ca", font));
-assert.equal(boxGlyph[0], "3".repeat(font.cellWidth));
-assert.equal(boxGlyph.at(-1), "3".repeat(font.cellWidth));
+assert.equal(boxGlyph[0], "1".repeat(font.cellWidth));
+assert.equal(boxGlyph.at(-1), "1".repeat(font.cellWidth));
 
 const size = measureText("\ud55c\uae00", font, { scale: 8 });
 assert.equal(size.width, 104);

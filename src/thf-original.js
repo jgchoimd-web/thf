@@ -137,19 +137,20 @@ export function unicodeBoxGlyph(char, font) {
   const height = font.cellHeight;
   const rows = blankGlyph(width, height);
   const codePoint = char.codePointAt(0) ?? 0;
+  const level = Math.max(1, (font.levels?.length ?? 4) - 1);
 
   for (let x = 0; x < width; x += 1) {
-    rows[0][x] = 3;
-    rows[height - 1][x] = 3;
+    rows[0][x] = level;
+    rows[height - 1][x] = level;
   }
 
   for (let y = 1; y < height - 1; y += 1) {
-    rows[y][0] = 3;
-    rows[y][width - 1] = 3;
+    rows[y][0] = level;
+    rows[y][width - 1] = level;
   }
 
   for (let y = 2; y < height - 2; y += 1) {
-    rows[y][1] = ((codePoint >> ((y - 2) * 2)) & 3) || 1;
+    rows[y][1] = ((codePoint >> (y - 2)) & 1) || 1;
   }
 
   return rows.map((row) => row.join(""));
